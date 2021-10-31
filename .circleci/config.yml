@@ -21,7 +21,7 @@ release_tag: &release_tag /^[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$/
 defaults_js: &defaults_js
   <<: *defaults
   docker:
-    - image: cimg/node:12.22
+    - image: cimg/node:14.17.4
 
 # android builds
 defaults_android: &defaults_android
@@ -134,6 +134,18 @@ jobs:
       # Run linter
       - run: yarn lint
 
+  # Check if all files respect the prettier rules
+  run-prettier:
+    <<: *defaults_js
+
+    steps:
+      - checkout
+      - *restore_node_cache
+      - *install_node_modules
+
+      # Run linter
+      - run: yarn prettier:check
+
   # Runs Danger checks on PR
   run-danger:
     <<: *defaults_js
@@ -145,6 +157,28 @@ jobs:
 
       # Run DangerJS
       - run: '[ -z "$DANGER_GITHUB_API_TOKEN" ] || yarn danger ci'
+
+  # Check for outdated dependencies and create a report
+  check-outdated-dependencies:
+    <<: *defaults_js
+
+    steps:
+      - checkout
+      - *restore_node_cache
+      - *install_node_modules
+      - run: '[ -z "IO_APP_SLACK_HELPER_BOT_TOKEN" ] || yarn ts-node --skip-project -O
+       ''{"lib":["es2015"]}'' scripts/ts/checkOutdatedDependencies/checkOutdatedDependencies.ts'
+
+  # Send a Slack message to notify the release of a new app version in beta
+  notify-new-app-version:
+    <<: *defaults_js
+
+    steps:
+      - checkout
+      - *restore_node_cache
+      - *install_node_modules
+      - run: '[ -z "IO_APP_SLACK_HELPER_BOT_TOKEN" ] || yarn ts-node --skip-project -O
+       ''{"lib":["es2015"]}'' scripts/ts/notifyNewAppVersion/notifyNewAppVersion.ts'
 
   # Create signed Android release
   android-release:
@@ -315,7 +349,7 @@ jobs:
 
   pagopa_specs_diff:
     docker:
-      - image: cimg/node:12.22
+      - image: cimg/python:3.8
     steps:
       - checkout
       - run:
@@ -437,6 +471,7 @@ workflows:
       - compile-typescript
       - run-tests
       - run-eslint
+      - run-prettier
 
       - run-danger:
           filters:
@@ -466,6 +501,12 @@ workflows:
               only: *release_tag
             branches:
               ignore: /.*/
+      - run-prettier:
+          filters:
+            tags:
+              only: *release_tag
+            branches:
+              ignore: /.*/
 
       # Build Android alpha release & submit to play store
       - alpha-release-android:
@@ -473,6 +514,7 @@ workflows:
             - compile-typescript
             - run-tests
             - run-eslint
+            - run-prettier
           filters:
             tags:
               only: *release_tag
@@ -485,6 +527,18 @@ workflows:
             - compile-typescript
             - run-tests
             - run-eslint
+            - run-prettier
+          filters:
+            tags:
+              only: *release_tag
+            branches:
+              ignore: /.*/
+
+      # Send a Slack message to notify the release of a new app version in beta
+      - notify-new-app-version:
+          requires:
+            - ios-beta-release
+            - alpha-release-android
           filters:
             tags:
               only: *release_tag
@@ -521,5 +575,19 @@ workflows:
     jobs:
       # TODO: Native Android e2e tests
       # TODO: Slack integration
-      - run-e2e-test-IOS
+      - compile-typescript
+      - run-e2e-test-IOS:
+          requires:
+            - compile-typescript
 
+  # Run a weekly report At 16:00 on Friday
+  weekly-report:
+    triggers:
+      - schedule:
+          cron: "0 14 * * 5"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - check-outdated-dependencies

@@ -11,6 +11,7 @@ import { ComuneBeanList } from "../../../../../../definitions/api_sicilia_vola/C
 const mapKinds: Record<number, string> = {};
 
 // convert a success response to the logical app representation of it
+// TODO: remove the mock when the swagger is completed
 const convertSuccess = (
   listaComuni: ComuneBeanList
 ): ReadonlyArray<Municipality> =>
@@ -19,7 +20,9 @@ const convertSuccess = (
       ? [
           {
             id: r.codiceCatastale,
-            name: r.descrizioneComune
+            name: r.descrizioneComune,
+            latitude: 1,
+            longitude: 1
           }
         ]
       : []
@@ -32,10 +35,8 @@ export function* handleGetListaComuniBySiglaProvincia(
   action: ActionType<typeof svGenerateVoucherAvailableMunicipality.request>
 ) {
   try {
-    const getListaComuniResult: SagaCallReturnType<typeof getListaComuni> = yield call(
-      getListaComuni,
-      { siglaProvincia: action.payload }
-    );
+    const getListaComuniResult: SagaCallReturnType<typeof getListaComuni> =
+      yield call(getListaComuni, { siglaProvincia: action.payload });
 
     if (getListaComuniResult.isRight()) {
       if (getListaComuniResult.value.status === 200) {

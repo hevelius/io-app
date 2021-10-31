@@ -30,9 +30,8 @@ export type CheckSessionResult = {
 
 export const idpSelected = createStandardAction("IDP_SELECTED")<SpidIdp>();
 
-export const testLoginRequest = createStandardAction("TEST_LOGIN_REQUEST")<
-  PasswordLogin
->();
+export const testLoginRequest =
+  createStandardAction("TEST_LOGIN_REQUEST")<PasswordLogin>();
 
 //
 // Action about IDP Login phase
@@ -47,15 +46,16 @@ export const loginSuccess = createStandardAction("LOGIN_SUCCESS")<{
   idp: string;
 }>();
 
-export const loginFailure = createStandardAction("LOGIN_FAILURE")<Error>();
+export const loginFailure = createStandardAction("LOGIN_FAILURE")<{
+  error: Error;
+  idp: string;
+}>();
 
-export const logoutRequest = createStandardAction("LOGOUT_REQUEST")<
-  LogoutOption
->();
+export const logoutRequest =
+  createStandardAction("LOGOUT_REQUEST")<LogoutOption>();
 
-export const logoutSuccess = createStandardAction("LOGOUT_SUCCESS")<
-  LogoutOption
->();
+export const logoutSuccess =
+  createStandardAction("LOGOUT_SUCCESS")<LogoutOption>();
 
 export const logoutFailure = createAction(
   "LOGOUT_FAILURE",

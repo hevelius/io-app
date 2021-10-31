@@ -36,17 +36,15 @@ function* handleTestLogin({
     );
   }
   try {
-    const testLoginResponse: SagaCallReturnType<typeof postTestLogin> = yield call(
-      postTestLogin,
-      payload
-    );
+    const testLoginResponse: SagaCallReturnType<typeof postTestLogin> =
+      yield call(postTestLogin, payload);
 
     if (testLoginResponse.isRight()) {
       if (testLoginResponse.value.status === 200) {
         yield put(
           loginSuccess({
-            token: (testLoginResponse.value.value
-              .token as string) as SessionToken,
+            token: testLoginResponse.value.value
+              .token as string as SessionToken,
             idp: "idp"
           })
         );
@@ -56,7 +54,7 @@ function* handleTestLogin({
     }
     throw new Error(readableReport(testLoginResponse.value));
   } catch (e) {
-    yield put(loginFailure(e));
+    yield put(loginFailure({ error: e, idp: "testIdp" }));
   }
 }
 
