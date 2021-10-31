@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native";
 import { ComponentProps, useState } from "react";
 import customVariables from "../../theme/variables";
 import ButtonDefaultOpacity from "../../components/ButtonDefaultOpacity";
+import Slider from "@react-native-community/slider";
 
 const styles = StyleSheet.create({
   header: {
@@ -74,6 +75,7 @@ export const Counter = () => {
       >
         <Text>reset</Text>
       </Button>
+      <Slider minimumValue={0} maximumValue={10} style={{ width: 200 }} />
     </Content>
   );
 };
