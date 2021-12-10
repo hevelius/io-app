@@ -7,12 +7,15 @@ import { Zendesk } from "../../../../../definitions/content/Zendesk";
 import { NetworkError } from "../../../../utils/errors";
 import { ZendeskCategory } from "../../../../../definitions/content/ZendeskCategory";
 
+export type ZendeskStartPayload = {
+  name: string;
+};
 /**
  * The user chooses to start the workflow to open a support request
  */
 export const zendeskSupportStart = createStandardAction(
   "ZENDESK_SUPPORT_START"
-)<void>();
+)<ZendeskStartPayload>();
 /**
  * The user completes the workflow to open a support request
  */

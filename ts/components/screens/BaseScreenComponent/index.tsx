@@ -215,7 +215,7 @@ const BaseScreenComponentFC = React.forwardRef<ReactNode, Props>(
           // TODO: remove local feature flag
           if (zendeskEnabled) {
             return () => {
-              dispatch(zendeskSupportStart());
+              dispatch(zendeskSupportStart({ name: "MATTEO" }));
             };
           }
           return undefined;

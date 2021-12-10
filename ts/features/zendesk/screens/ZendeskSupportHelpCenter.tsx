@@ -1,19 +1,27 @@
 import React, { useEffect } from "react";
 import { SafeAreaView, ScrollView } from "react-native";
 import { useDispatch } from "react-redux";
+import { NavigationInjectedProps } from "react-navigation";
 import I18n from "../../../i18n";
 import BaseScreenComponent from "../../../components/screens/BaseScreenComponent";
 import { IOStyles } from "../../../components/core/variables/IOStyles";
 import View from "../../../components/ui/TextWithIcon";
-import { getZendeskConfig, zendeskSupportBack } from "../store/actions";
+import {
+  getZendeskConfig,
+  ZendeskStartPayload,
+  zendeskSupportBack
+} from "../store/actions";
 import ZendeskSupportComponent from "../../../components/ZendeskSupportComponent";
+
+type Props = NavigationInjectedProps<ZendeskStartPayload>;
 
 /**
  * Ingress screen to access the Zendesk assistance tool
  * the user can choose to open a new ticket, follow previous conversations or read the faqs
  * @constructor
  */
-const ZendeskSupportHelpCenter = () => {
+const ZendeskSupportHelpCenter = (props: Props) => {
+  const test = props.navigation.getParam("name");
   const dispatch = useDispatch();
   const workUnitBack = () => dispatch(zendeskSupportBack());
   /**
