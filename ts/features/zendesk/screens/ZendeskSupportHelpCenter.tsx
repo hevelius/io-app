@@ -4,9 +4,10 @@ import { useDispatch } from "react-redux";
 import { none } from "fp-ts/lib/Option";
 import * as pot from "italia-ts-commons/lib/pot";
 import { NavigationInjectedProps } from "react-navigation";
-import { constNull } from "fp-ts/lib/function";
 import I18n from "../../../i18n";
-import BaseScreenComponent from "../../../components/screens/BaseScreenComponent";
+import BaseScreenComponent, {
+  ContextualHelpProps
+} from "../../../components/screens/BaseScreenComponent";
 import { IOStyles } from "../../../components/core/variables/IOStyles";
 import View from "../../../components/ui/TextWithIcon";
 import {
@@ -27,11 +28,10 @@ import { isStringNullyOrEmpty } from "../../../utils/strings";
 import { H3 } from "../../../components/core/typography/H3";
 import FAQComponent from "../../../components/FAQComponent";
 import {
-  getContextualHelpConfig,
   getContextualHelpData,
-  handleOnLinkClicked,
   reloadContextualHelpDataThreshold
 } from "../../../components/screens/BaseScreenComponent/utils";
+import Markdown from "../../../components/ui/Markdown";
 
 type FaqManagerProps = Pick<
   ZendeskStartPayload,
@@ -141,22 +141,34 @@ const ZendeskSupportHelpCenter = (props: Props) => {
   // Navigation prop
   const faqCategories = props.navigation.getParam("faqCategories");
   const contextualHelp = props.navigation.getParam("contextualHelp");
-  const contextualHelpMarkdown = props.navigation.getParam(
-    "contextualHelpMarkdown"
-  );
   const startingRoute = props.navigation.getParam("startingRoute");
 
   const [markdownContentLoaded, setMarkdownContentLoaded] = useState<boolean>(
-    !contextualHelpMarkdown
+    // if the contextual help is not markdown, consider it as already loaded
+    contextualHelp.kind !== "markdown"
   );
 
-  const contextualHelpConfig = getContextualHelpConfig(
-    contextualHelp,
-    contextualHelpMarkdown,
-    () => setMarkdownContentLoaded(true),
-    handleOnLinkClicked(() => workUnitComplete())
-  );
-
+  const getContextualHelpConfig = (): ContextualHelpProps => {
+    switch (contextualHelp.kind) {
+      case "markdown":
+        return {
+          body: () => (
+            <Markdown
+              onLinkClicked={workUnitComplete}
+              onLoadEnd={() => setMarkdownContentLoaded(true)}
+            >
+              {I18n.t(contextualHelp.value.body)}
+            </Markdown>
+          ),
+          title: I18n.t(contextualHelp.value.title)
+        };
+      case "props":
+        return {
+          body: contextualHelp.value.body,
+          title: contextualHelp.value.title
+        };
+    }
+  };
   /**
    * as first step request the config (categories + panicmode) that could
      be used in the next steps (possible network error are handled in {@link ZendeskAskPermissions})
@@ -164,7 +176,7 @@ const ZendeskSupportHelpCenter = (props: Props) => {
   useEffect(() => {
     dispatch(getZendeskConfig.request());
   }, [dispatch]);
-
+  const contextualHelpConfig = getContextualHelpConfig();
   return (
     <BaseScreenComponent
       showInstabugChat={false}
@@ -182,8 +194,8 @@ const ZendeskSupportHelpCenter = (props: Props) => {
       >
         <ScrollView style={[IOStyles.horizontalContentPadding]}>
           <FaqManager
-            title={contextualHelpConfig?.title ?? ""}
-            body={contextualHelpConfig?.body ?? constNull}
+            title={contextualHelpConfig.title}
+            body={contextualHelpConfig.body}
             faqCategories={faqCategories}
             contentLoaded={markdownContentLoaded}
             startingRoute={startingRoute}

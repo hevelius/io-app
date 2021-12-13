@@ -13,10 +13,11 @@ import {
 } from "../../../../components/screens/BaseScreenComponent";
 
 export type ZendeskStartPayload = {
-  contextualHelp?: ContextualHelpProps;
-  contextualHelpMarkdown?: ContextualHelpPropsMarkdown;
+  contextualHelp:
+    | { kind: "props"; value: ContextualHelpProps }
+    | { kind: "markdown"; value: ContextualHelpPropsMarkdown };
   contentLoaded: boolean;
-  faqCategories?: ReadonlyArray<FAQsCategoriesType>;
+  faqCategories: ReadonlyArray<FAQsCategoriesType>;
   startingRoute: string;
 };
 /**

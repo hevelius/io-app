@@ -28,7 +28,10 @@ import { SearchType } from "../../search/SearchButton";
 import { AccessibilityEvents, BaseHeader } from "../BaseHeader";
 
 import { zendeskEnabled } from "../../../config";
-import { zendeskSupportStart } from "../../../features/zendesk/store/actions";
+import {
+  ZendeskStartPayload,
+  zendeskSupportStart
+} from "../../../features/zendesk/store/actions";
 import { useIOSelector } from "../../../store/hooks";
 import { assistanceToolConfigSelector } from "../../../store/reducers/backendStatus";
 import { assistanceToolRemoteConfig } from "../../../utils/supportAssistance";
@@ -199,24 +202,40 @@ const BaseScreenComponentFC = React.forwardRef<ReactNode, Props>(
     const dispatch = useDispatch();
     const assistanceToolConfig = useIOSelector(assistanceToolConfigSelector);
     const choosenTool = assistanceToolRemoteConfig(assistanceToolConfig);
-
+    const onShowHelpZendesk = () => {
+      const cHelpProps: ZendeskStartPayload["contextualHelp"] | undefined =
+        fromNullable(contextualHelp)
+          .map<ZendeskStartPayload["contextualHelp"]>(value => ({
+            kind: "props",
+            value
+          }))
+          .alt(
+            fromNullable(contextualHelpMarkdown).map(value => ({
+              kind: "markdown",
+              value
+            }))
+          )
+          .toUndefined();
+      if (cHelpProps === undefined) {
+        return undefined;
+      }
+      return () =>
+        dispatch(
+          zendeskSupportStart({
+            // If contextualHelpConfig is undefined this function is not called
+            contentLoaded: markdownContentLoaded,
+            contextualHelp: cHelpProps,
+            faqCategories: faqCategories ?? [],
+            startingRoute: currentScreenName
+          })
+        );
+    };
     const onShowHelp = (): (() => void) | undefined => {
       switch (choosenTool) {
         case ToolEnum.zendesk:
           // TODO: remove local feature flag
           if (zendeskEnabled) {
-            return () => {
-              dispatch(
-                zendeskSupportStart({
-                  // If contextualHelpConfig is undefined this function is not called
-                  contentLoaded: markdownContentLoaded,
-                  faqCategories,
-                  contextualHelp,
-                  contextualHelpMarkdown,
-                  startingRoute: currentScreenName
-                })
-              );
-            };
+            return onShowHelpZendesk();
           }
           return undefined;
         case ToolEnum.instabug:
