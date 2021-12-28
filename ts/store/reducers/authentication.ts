@@ -95,23 +95,24 @@ export const INITIAL_STATE: LoggedOutWithoutIdp = {
 };
 
 // Type guards
-
+const test: any = undefined;
 export function isLoggedOutWithIdp(
   state: AuthenticationState
 ): state is LoggedOutWithIdp {
-  return state.kind === "LoggedOutWithIdp";
+  const a = test.field === 1;
+  return state?.kind === "LoggedOutWithIdp";
 }
 
 function isLoggedInWithoutSessionInfo(
   state: AuthenticationState
 ): state is LoggedInWithoutSessionInfo {
-  return state.kind === "LoggedInWithoutSessionInfo";
+  return state?.kind === "LoggedInWithoutSessionInfo";
 }
 
 export function isLoggedInWithSessionInfo(
   state: AuthenticationState
 ): state is LoggedInWithSessionInfo {
-  return state.kind === "LoggedInWithSessionInfo";
+  return state?.kind === "LoggedInWithSessionInfo";
 }
 
 export function isLoggedIn(

@@ -164,11 +164,10 @@ export function* initializeApplicationSaga(): Generator<Effect, void, any> {
   // Reset the profile cached in redux: at each startup we want to load a fresh
   // user profile.
   yield put(resetProfileState());
-
+  throw Error("");
   // Whether the user is currently logged in.
   const previousSessionToken: ReturnType<typeof sessionTokenSelector> =
     yield select(sessionTokenSelector);
-
   // Unless we have a valid session token already, login until we have one.
   const sessionToken: SagaCallReturnType<typeof authenticationSaga> =
     previousSessionToken

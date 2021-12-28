@@ -33,6 +33,7 @@ export function* handleSetMixpanelEnabled(
 export function* askMixpanelOptIn() {
   const isMixpanelEnabledResult: ReturnType<typeof isMixpanelEnabled> =
     yield select(isMixpanelEnabled);
+
   // user already express a preference
   // do nothing
   if (isMixpanelEnabledResult !== null) {
