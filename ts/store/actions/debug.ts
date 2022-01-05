@@ -31,6 +31,10 @@ export const setDebugCurrentRouteName = createStandardAction(
   "DEBUG_SET_CURRENT_ROUTE"
 )<string>();
 
+export const navigatorInitCompleted = createStandardAction(
+  "NAVIGATOR_INIT_COMPLETED"
+)<void>();
+
 /**
  * An Instabug report is open
  */
@@ -49,4 +53,5 @@ export type DebugActions =
   | ActionType<typeof setDebugModeEnabled>
   | ActionType<typeof instabugReportOpened>
   | ActionType<typeof setDebugCurrentRouteName>
-  | ActionType<typeof instabugReportClosed>;
+  | ActionType<typeof instabugReportClosed>
+  | ActionType<typeof navigatorInitCompleted>;

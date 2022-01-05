@@ -27,6 +27,7 @@ import { clipboardSetStringWithFeedback } from "../../utils/clipboard";
 import { getDeviceId } from "../../utils/device";
 import { OPERISSUES_10_track } from "../../sagas/startup";
 import { IngressCheckBox } from "./CheckBox";
+import { navigatorInitCompletedSelector } from "../../store/reducers/navigation";
 
 type Props = ReduxProps & ReturnType<typeof mapStateToProps>;
 
@@ -46,7 +47,6 @@ const contextualHelpMarkdown: ContextualHelpPropsMarkdown = {
 class IngressScreen extends React.PureComponent<Props> {
   public componentDidMount() {
     // Dispatch START_APPLICATION_INITIALIZATION to initialize the app
-    this.props.dispatch(startApplicationInitialization());
   }
 
   public componentDidUpdate(prevProps: Readonly<Props>) {
@@ -61,6 +61,14 @@ class IngressScreen extends React.PureComponent<Props> {
         isDefined: this.props.maybeSessionInfo !== undefined
       });
     }
+    if (
+      !prevProps.navigatorInitCompleted &&
+      this.props.navigatorInitCompleted
+    ) {
+      this.props.dispatch(startApplicationInitialization());
+    }
+    console.log("prev", prevProps.navigatorInitCompleted);
+    console.log("curr", this.props.navigatorInitCompleted);
   }
 
   public render() {
@@ -146,7 +154,8 @@ function mapStateToProps(state: GlobalState) {
     isProfileEnabled:
       pot.isSome(potProfile) &&
       potProfile.value.has_profile &&
-      potProfile.value.is_inbox_enabled
+      potProfile.value.is_inbox_enabled,
+    navigatorInitCompleted: navigatorInitCompletedSelector(state)
   };
 }
 

@@ -20,7 +20,10 @@ import {
   applicationChangeState,
   ApplicationState
 } from "./store/actions/application";
-import { setDebugCurrentRouteName } from "./store/actions/debug";
+import {
+  navigatorInitCompleted,
+  setDebugCurrentRouteName
+} from "./store/actions/debug";
 import { navigateToDeepLink, setDeepLink } from "./store/actions/deepLink";
 import { navigateBack } from "./store/actions/navigation";
 import { trackScreen } from "./store/middlewares/navigation";
@@ -136,7 +139,10 @@ class RootContainer extends React.PureComponent<Props> {
         {Platform.OS === "android" && <FlagSecureComponent />}
         <AppContainer
           ref={navigatorRef => {
-            NavigationService.setTopLevelNavigator(navigatorRef);
+            setTimeout(() => {
+              this.props.navigatorInitCompleted();
+              NavigationService.setTopLevelNavigator(navigatorRef);
+            }, 1200);
           }}
           onNavigationStateChange={(prevState, currentState) => {
             NavigationService.setCurrentState(currentState);
@@ -166,6 +172,7 @@ const mapStateToProps = (state: GlobalState) => ({
 });
 
 const mapDispatchToProps = {
+  navigatorInitCompleted,
   applicationChangeState,
   setDeepLink,
   navigateToDeepLink,

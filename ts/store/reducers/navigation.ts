@@ -1,5 +1,8 @@
 import { getType } from "typesafe-actions";
-import { setDebugCurrentRouteName } from "../actions/debug";
+import {
+  navigatorInitCompleted,
+  setDebugCurrentRouteName
+} from "../actions/debug";
 import { Action } from "../actions/types";
 import { GlobalState } from "./types";
 
@@ -9,10 +12,12 @@ import { GlobalState } from "./types";
  */
 export type NavigationState = {
   currentRoute: string;
+  navigatorInitCompleted: boolean;
 };
 
 const INITIAL_STATE: NavigationState = {
-  currentRoute: "n/a"
+  currentRoute: "n/a",
+  navigatorInitCompleted: false
 };
 
 export function navigationReducer(
@@ -24,6 +29,11 @@ export function navigationReducer(
       return {
         ...state,
         currentRoute: action.payload
+      };
+    case getType(navigatorInitCompleted):
+      return {
+        ...state,
+        navigatorInitCompleted: true
       };
   }
 
@@ -37,3 +47,6 @@ export function navigationReducer(
  */
 export const currentRouteSelector = (state: GlobalState) =>
   state.navigation.currentRoute;
+
+export const navigatorInitCompletedSelector = (state: GlobalState): boolean =>
+  state.navigation.navigatorInitCompleted;
