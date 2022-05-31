@@ -30,7 +30,8 @@ import {
   pagoPaApiUrlPrefixTest,
   svEnabled,
   usePaginatedMessages,
-  zendeskEnabled
+  zendeskEnabled,
+  newProfileScreenEnabled
 } from "../config";
 import { watchBonusSaga } from "../features/bonus/bonusVacanze/store/sagas/bonusSaga";
 import { watchBonusBpdSaga } from "../features/bonus/bpd/saga";
@@ -76,6 +77,7 @@ import { UIMessageId } from "../store/reducers/entities/messages/types";
 import { watchBonusCdcSaga } from "../features/bonus/cdc/saga";
 import { differentProfileLoggedIn } from "../store/actions/crossSessions";
 import { clearAllMvlAttachments } from "../features/mvl/saga/mvlAttachments";
+import { watchProfileSaga } from "../features/profile/saga";
 import {
   startAndReturnIdentificationResult,
   watchIdentification
@@ -411,6 +413,11 @@ export function* initializeApplicationSaga(): Generator<
   if (mvlEnabled) {
     // Start watching for MVL actions
     yield* fork(watchMvlSaga, sessionToken);
+  }
+
+  if (newProfileScreenEnabled) {
+    // Start watching for new profile actions
+    yield* fork(watchProfileSaga, backendClient);
   }
 
   // Load the user metadata
