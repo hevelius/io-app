@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test ProfileUserItem should match the snapshot 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "padding": 10,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "paddingRight": 24,
+        }
+      }
+      testID="ProfileUserItemIconTestID"
+    >
+      <SvgMock
+        height={24}
+        width={24}
+      />
+    </View>
+    <View>
+      <Text
+        color="bluegreyDark"
+        font="TitilliumWeb"
+        fontStyle={
+          Object {
+            "fontSize": 18,
+          }
+        }
+        style={
+          Array [
+            Object {
+              "fontSize": 18,
+            },
+            Object {
+              "color": "#17324D",
+              "fontFamily": "Titillium Web",
+              "fontStyle": "normal",
+              "fontWeight": "600",
+            },
+          ]
+        }
+        testID="ProfileUserItemTitleTestID"
+        weight="SemiBold"
+        weightColorFactory={[Function]}
+      >
+        title
+      </Text>
+      <Text
+        color="bluegreyDark"
+        font="TitilliumWeb"
+        fontStyle={
+          Object {
+            "fontSize": 16,
+          }
+        }
+        style={
+          Array [
+            Object {
+              "fontSize": 16,
+            },
+            Object {
+              "color": "#17324D",
+              "fontFamily": "Titillium Web",
+              "fontStyle": "normal",
+              "fontWeight": "400",
+            },
+          ]
+        }
+        testID="ProfileUserItemSubTitleTestID"
+        weight="Regular"
+        weightColorFactory={[Function]}
+      >
+        subtitle
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {},
+        Object {
+          "backgroundColor": "#C9C9C9",
+        },
+        false,
+        Object {
+          "height": 0.5,
+        },
+      ]
+    }
+  />
+</View>
+`;

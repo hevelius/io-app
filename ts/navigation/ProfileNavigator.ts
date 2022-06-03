@@ -24,7 +24,11 @@ import ShareDataScreen from "../screens/profile/ShareDataScreen";
 import WebPlayground from "../screens/profile/WebPlayground";
 import { Showroom } from "../screens/showroom/Showroom";
 import { PremiumMessagesOptInOutProfileScreen } from "../screens/profile/premiumMessages/PremiumMessagesOptInOutProfileScreen";
-import { premiumMessagesOptInEnabled } from "../config";
+import {
+  newProfileScreenEnabled,
+  premiumMessagesOptInEnabled
+} from "../config";
+import ProfileMainScreen from "../features/profile/screens/ProfileMainScreen";
 import ROUTES from "./routes";
 
 /**
@@ -56,7 +60,7 @@ const ProfileNavigator = createCompatNavigatorFactory(createStackNavigator)(
       screen: PreferencesScreen
     },
     [ROUTES.PROFILE_DATA]: {
-      screen: ProfileDataScreen
+      screen: newProfileScreenEnabled ? ProfileMainScreen : ProfileDataScreen
     },
     [ROUTES.PROFILE_SECURITY]: {
       screen: SecurityScreen
