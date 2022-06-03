@@ -164,4 +164,4 @@ export const testOverlayCaption: string | undefined =
 
 // New profile screen design Feature Flag
 export const newProfileScreenEnabled =
-  Config.NEW_PROFILE_SCREEEN_ENABLED === "YES";
+  Config.NEW_PROFILE_SCREEN_ENABLED === "YES";
