@@ -3088,6 +3088,15 @@ features:
       errors:
         data:
           buttonTitle: Torna indietro
+  profile:
+    main:
+      title: "Profilo"
+      loading: "Caricamento in corso..."
+    data:
+      fullName: "Nome e Cognome"
+      fiscalCode: "Codice Fiscale"
+      email: "Indirizzo email"
+      birthDate: "Data di nascita"
 webView:
   error:
     missingParams: Non sono presenti le informazioni necessarie per accedere a questa pagina

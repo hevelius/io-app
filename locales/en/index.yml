@@ -3061,6 +3061,15 @@ features:
       errors:
         data:
           buttonTitle: Go back
+  profile:
+    main:
+      title: "Profile"
+      loading: "Loading..."
+    data:
+      fullName: "Name and Surname"
+      fiscalCode: "Fiscal Code"
+      email: "Email address"
+      birthDate: BirthDate"
 webView:
   error:
     missingParams: Not all information necessary to access this page are available
