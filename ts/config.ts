@@ -161,3 +161,7 @@ export const maximumItemsFromAPI: number = 100;
 
 export const testOverlayCaption: string | undefined =
   Config.TEST_OVERLAY_CAPTION;
+
+// New profile screen design Feature Flag
+export const newProfileScreenEnabled =
+  Config.NEW_PROFILE_SCREEEN_ENABLED === "YES";
