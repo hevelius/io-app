@@ -1,13 +1,14 @@
 import { getType } from "typesafe-actions";
 import * as pot from "italia-ts-commons/lib/pot";
 import { createSelector } from "reselect";
-import { fromNullable, none, Option } from "fp-ts/lib/Option";
+import { fromNullable, none, Option, some } from "fp-ts/lib/Option";
 import { InitializedProfile } from "../../../../../definitions/backend/InitializedProfile";
 import { Action } from "../../../../store/actions/types";
 import { getErrorFromNetworkError } from "../../../../utils/errors";
 import { getProfile } from "../actions";
 import { GlobalState } from "../../../../store/reducers/types";
 import { EmailAddress } from "../../../../../definitions/backend/EmailAddress";
+import { UserDataProcessingStatusEnum } from "../../../../../definitions/backend/UserDataProcessingStatus";
 
 export type ProfileState = pot.Pot<InitializedProfile, Error>;
 
@@ -70,5 +71,38 @@ export const profileEmailSelector = createSelector(
       none
     )
 );
+
+const userDataStatusToBoolean = (
+  status: UserDataProcessingStatusEnum | undefined
+): boolean =>
+  status === UserDataProcessingStatusEnum.PENDING ||
+  status === UserDataProcessingStatusEnum.WIP;
+
+/**
+ * This selector returns true if the user has a pending or a WIP status
+ * @param state
+ * @returns
+ */
+export const profileDeletionStatusSelector = (
+  state: GlobalState
+): Option<pot.Pot<boolean, Error>> =>
+  pot.fold(
+    state.userDataProcessing.DELETE,
+    () => some(pot.none) as Option<pot.Pot<boolean, Error>>,
+    () => some(pot.noneLoading),
+    value => some(pot.noneUpdating(userDataStatusToBoolean(value?.status))),
+    error => some(pot.noneError(error)),
+    value => some(pot.some(userDataStatusToBoolean(value?.status))),
+    value => some(pot.someLoading(userDataStatusToBoolean(value?.status))),
+    (oldValue, newValue) =>
+      some(
+        pot.someUpdating(
+          userDataStatusToBoolean(oldValue?.status),
+          userDataStatusToBoolean(newValue?.status)
+        )
+      ),
+    (value, error) =>
+      some(pot.someError(userDataStatusToBoolean(value?.status), error))
+  );
 
 export default profileReducer;

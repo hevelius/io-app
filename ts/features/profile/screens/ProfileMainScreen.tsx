@@ -11,7 +11,8 @@ import {
   profileSelector,
   profileEmailSelector,
   profileFullNameSelector,
-  profileBirthDateSelector
+  profileBirthDateSelector,
+  profileDeletionStatusSelector
 } from "../store/reducers/profile";
 import { LoadingErrorComponent } from "../../bonus/bonusVacanze/components/loadingErrorScreen/LoadingErrorComponent";
 import BaseScreenComponent, {
@@ -25,6 +26,9 @@ import NameSurnameIcon from "../../../../img/assistance/nameSurname.svg";
 import FiscalCodeIcon from "../../../../img/assistance/fiscalCode.svg";
 import EmailIcon from "../../../../img/assistance/email.svg";
 import InfoIcon from "../../../../img/assistance/info.svg";
+import ProfileStatusSwitchItem from "../components/ProfileStatusSwitchItem";
+import { loadUserDataProcessing } from "../../../store/actions/userDataProcessing";
+import { UserDataProcessingChoiceEnum } from "../../../../definitions/backend/UserDataProcessingChoice";
 
 const contextualHelpMarkdown: ContextualHelpPropsMarkdown = {
   title: "profile.preferences.contextualHelpTitle",
@@ -44,6 +48,7 @@ const ProfileMainScreen = (props: Props): React.ReactElement => {
 
   useOnFirstRender(() => {
     props.loadProfile();
+    props.loadProfileDeletionStatus();
   });
 
   const iconSize = 24;
@@ -97,6 +102,13 @@ const ProfileMainScreen = (props: Props): React.ReactElement => {
                 icon={<InfoIcon width={iconSize} height={iconSize} />}
               />
             )}
+            {/* Show Deletion Status Switch */}
+            {props.profileDeletionStatus.isSome() && (
+              <ProfileStatusSwitchItem
+                title={I18n.t("features.profile.main.deletion")}
+                value={props.profileDeletionStatus.value}
+              />
+            )}
           </List>
         </ScreenContent>
       )}
@@ -105,7 +117,11 @@ const ProfileMainScreen = (props: Props): React.ReactElement => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  loadProfile: () => dispatch(getProfile.request())
+  loadProfile: () => dispatch(getProfile.request()),
+  loadProfileDeletionStatus: () =>
+    dispatch(
+      loadUserDataProcessing.request(UserDataProcessingChoiceEnum.DELETE)
+    )
 });
 
 const mapStateToProps = (state: GlobalState) => ({
@@ -113,7 +129,8 @@ const mapStateToProps = (state: GlobalState) => ({
   fullName: profileFullNameSelector(state),
   email: profileEmailSelector(state),
   fiscalCode: profileFiscalCodeSelector(state),
-  birthDate: profileBirthDateSelector(state)
+  birthDate: profileBirthDateSelector(state),
+  profileDeletionStatus: profileDeletionStatusSelector(state)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileMainScreen);

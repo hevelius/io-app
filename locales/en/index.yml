@@ -3065,6 +3065,7 @@ features:
     main:
       title: "Profile"
       loading: "Loading..."
+      deletion: "Profile deletion status"
     data:
       fullName: "Name and Surname"
       fiscalCode: "Fiscal Code"
