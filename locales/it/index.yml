@@ -3093,6 +3093,10 @@ features:
       title: "Profilo"
       loading: "Caricamento in corso..."
       deletion: "Stato di cancellazione del profilo"
+    deletion:
+      startTitle: "Cancellazione profilo"
+      confirmTitle: "Conferma cancellazione"
+      message: "Proseguendo potrai richiedere la cancellazione del tuo profilo"
     data:
       fullName: "Nome e Cognome"
       fiscalCode: "Codice Fiscale"

@@ -3066,6 +3066,10 @@ features:
       title: "Profile"
       loading: "Loading..."
       deletion: "Profile deletion status"
+    deletion:
+      startTitle: "Profile deletion"
+      confirmTitle: "Confirm deletion"
+      message: "By continuing you can request the cancellation of your profile"
     data:
       fullName: "Name and Surname"
       fiscalCode: "Fiscal Code"
