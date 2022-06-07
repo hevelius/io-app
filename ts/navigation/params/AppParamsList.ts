@@ -17,6 +17,8 @@ import ROUTES from "../routes";
 import { CDC_ROUTES } from "../../features/bonus/cdc/navigation/routes";
 import { CdcBonusRequestParamsList } from "../../features/bonus/cdc/navigation/params";
 import FIMS_ROUTES from "../../features/fims/navigation/routes";
+import NEWPROFILE_ROUTES from "../../features/profile/navigation/routes";
+import { NewProfileParamsList } from "../../features/profile/navigation/params";
 import { FimsParamsList } from "../../features/fims/navigation/params";
 import { AuthenticationParamsList } from "./AuthenticationParamsList";
 import { MainTabParamsList } from "./MainTabParamsList";
@@ -48,6 +50,8 @@ export type AppParamsList = {
   [UADONATION_ROUTES.WEBVIEW]: undefined;
   [CDC_ROUTES.BONUS_REQUEST_MAIN]: NavigatorScreenParams<CdcBonusRequestParamsList>;
   [FIMS_ROUTES.MAIN]: NavigatorScreenParams<FimsParamsList>;
+  [NEWPROFILE_ROUTES.DELETION
+    .MAIN]: NavigatorScreenParams<NewProfileParamsList>;
 };
 
 /**

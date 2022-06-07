@@ -27,9 +27,11 @@ import {
   isCdcEnabledSelector,
   isFIMSEnabledSelector
 } from "../store/reducers/backendStatus";
-import { fimsEnabled } from "../config";
+import { fimsEnabled, newProfileScreenEnabled } from "../config";
 import FIMS_ROUTES from "../features/fims/navigation/routes";
 import { FimsNavigator } from "../features/fims/navigation/navigator";
+import NEWPROFILE_ROUTES from "../features/profile/navigation/routes";
+import { NewProfileDeletionStackkNavigator } from "../features/profile/navigation/navigator";
 import authenticationNavigator from "./AuthenticationNavigator";
 import messagesNavigator from "./MessagesNavigator";
 import NavigationService, { navigationRef } from "./NavigationService";
@@ -115,6 +117,13 @@ export const AppStackNavigator = () => {
         <Stack.Screen
           name={CDC_ROUTES.BONUS_REQUEST_MAIN}
           component={CdcStackNavigator}
+        />
+      )}
+
+      {newProfileScreenEnabled && (
+        <Stack.Screen
+          name={NEWPROFILE_ROUTES.DELETION.MAIN}
+          component={NewProfileDeletionStackkNavigator}
         />
       )}
     </Stack.Navigator>

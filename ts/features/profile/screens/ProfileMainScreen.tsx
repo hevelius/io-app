@@ -1,5 +1,4 @@
 import * as React from "react";
-import { List } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -7,11 +6,7 @@ import * as pot from "italia-ts-commons/lib/pot";
 import I18n from "../../../i18n";
 import { GlobalState } from "../../../store/reducers/types";
 import {
-  profileFiscalCodeSelector,
   profileSelector,
-  profileEmailSelector,
-  profileFullNameSelector,
-  profileBirthDateSelector,
   profileDeletionStatusSelector
 } from "../store/reducers/profile";
 import { LoadingErrorComponent } from "../../bonus/bonusVacanze/components/loadingErrorScreen/LoadingErrorComponent";
@@ -21,14 +16,10 @@ import BaseScreenComponent, {
 import ScreenContent from "../../../components/screens/ScreenContent";
 import { getProfile } from "../store/actions";
 import { useOnFirstRender } from "../../../utils/hooks/useOnFirstRender";
-import ProfileUserItem from "../components/ProfileUserItem";
-import NameSurnameIcon from "../../../../img/assistance/nameSurname.svg";
-import FiscalCodeIcon from "../../../../img/assistance/fiscalCode.svg";
-import EmailIcon from "../../../../img/assistance/email.svg";
-import InfoIcon from "../../../../img/assistance/info.svg";
 import ProfileStatusSwitchItem from "../components/ProfileStatusSwitchItem";
 import { loadUserDataProcessing } from "../../../store/actions/userDataProcessing";
 import { UserDataProcessingChoiceEnum } from "../../../../definitions/backend/UserDataProcessingChoice";
+import ProfileUserList from "../components/ProfileUserList";
 
 const contextualHelpMarkdown: ContextualHelpPropsMarkdown = {
   title: "profile.preferences.contextualHelpTitle",
@@ -51,8 +42,6 @@ const ProfileMainScreen = (props: Props): React.ReactElement => {
     props.loadProfileDeletionStatus();
   });
 
-  const iconSize = 24;
-
   return (
     <BaseScreenComponent
       contextualHelpMarkdown={contextualHelpMarkdown}
@@ -69,47 +58,14 @@ const ProfileMainScreen = (props: Props): React.ReactElement => {
         />
       ) : (
         <ScreenContent title={I18n.t("features.profile.main.title")}>
-          <List withContentLateralPadding>
-            {/* Show name and surname */}
-            {props.fullName.isSome() && (
-              <ProfileUserItem
-                title={I18n.t("features.profile.data.fullName")}
-                subtitle={props.fullName.value}
-                icon={<NameSurnameIcon width={iconSize} height={iconSize} />}
-              />
-            )}
-            {/* Show fiscalcode */}
-            {props.fiscalCode.isSome() && (
-              <ProfileUserItem
-                title={I18n.t("features.profile.data.fiscalCode")}
-                subtitle={props.fiscalCode.value}
-                icon={<FiscalCodeIcon width={iconSize} height={iconSize} />}
-              />
-            )}
-            {/* Show email */}
-            {props.email.isSome() && (
-              <ProfileUserItem
-                title={I18n.t("features.profile.data.email")}
-                subtitle={props.email.value}
-                icon={<EmailIcon width={iconSize} height={iconSize} />}
-              />
-            )}
-            {/* Show Birthdate */}
-            {props.birthDate.isSome() && (
-              <ProfileUserItem
-                title={I18n.t("features.profile.data.birthDate")}
-                subtitle={props.birthDate.value.toLocaleDateString()}
-                icon={<InfoIcon width={iconSize} height={iconSize} />}
-              />
-            )}
-            {/* Show Deletion Status Switch */}
-            {props.profileDeletionStatus.isSome() && (
-              <ProfileStatusSwitchItem
-                title={I18n.t("features.profile.main.deletion")}
-                value={props.profileDeletionStatus.value}
-              />
-            )}
-          </List>
+          <ProfileUserList />
+          {/* Show Deletion Status Switch */}
+          {props.profileDeletionStatus.isSome() && (
+            <ProfileStatusSwitchItem
+              title={I18n.t("features.profile.main.deletion")}
+              value={props.profileDeletionStatus.value}
+            />
+          )}
         </ScreenContent>
       )}
     </BaseScreenComponent>
@@ -126,10 +82,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const mapStateToProps = (state: GlobalState) => ({
   profile: profileSelector(state),
-  fullName: profileFullNameSelector(state),
-  email: profileEmailSelector(state),
-  fiscalCode: profileFiscalCodeSelector(state),
-  birthDate: profileBirthDateSelector(state),
   profileDeletionStatus: profileDeletionStatusSelector(state)
 });
 

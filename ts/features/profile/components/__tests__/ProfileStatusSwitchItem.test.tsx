@@ -8,6 +8,18 @@ type Props = {
   value: pot.Pot<boolean, Error>;
 };
 
+const mockedNavigate = jest.fn();
+
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: mockedNavigate
+    })
+  };
+});
+
 describe("Test ProfileStatusSwitchItem", () => {
   it("should match the snapshot with title and pot.some", () => {
     const props = {
