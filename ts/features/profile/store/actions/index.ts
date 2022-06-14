@@ -6,9 +6,9 @@ import { InitializedProfile } from "../../../../../definitions/backend/Initializ
  * The user requests the EU Covid certificate, starting from the auth_code
  */
 export const getProfile = createAsyncAction(
-  "PROFILE_REQUEST",
-  "PROFILE_SUCCESS",
-  "PROFILE_FAILURE"
+  "PROFILE_GET_REQUEST",
+  "PROFILE_GET_SUCCESS",
+  "PROFILE_GET_FAILURE"
 )<void, InitializedProfile, NetworkError>();
 
 export type ProfileActions = ActionType<typeof getProfile>;
