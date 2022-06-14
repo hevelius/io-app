@@ -34,9 +34,9 @@ export function* handleGetProfile(
     if (getProfileResult.isLeft()) {
       // left side of the Either
       yield* put(
-        loadProfile.failure({
-          ...getGenericError(new Error(readableReport(getProfileResult.value)))
-        })
+        loadProfile.failure(
+          getGenericError(new Error(readableReport(getProfileResult.value)))
+        )
       );
     }
   } catch (error) {
