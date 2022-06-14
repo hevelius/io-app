@@ -21,7 +21,6 @@ export function* handleGetProfile(
     );
 
     if (getProfileResult.isRight()) {
-      // right side of the Either
       if (getProfileResult.value.status === 200) {
         yield* put(loadProfile.success(getProfileResult.value.value));
         return;
