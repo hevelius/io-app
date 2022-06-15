@@ -105,4 +105,27 @@ export const profileDeletionStatusSelector = (
       some(pot.someError(userDataStatusToBoolean(value?.status), error))
   );
 
+export const profileDeletionRequestSelector = createSelector(
+  profileDeletionStatusSelector,
+  (status: Option<pot.Pot<boolean, Error>>): boolean =>
+    pot.isUpdating(status.isSome() ? status.value : pot.none)
+);
+
+export const profileDeletionErrorSelector = createSelector(
+  profileDeletionStatusSelector,
+  (status: Option<pot.Pot<boolean, Error>>): boolean =>
+    pot.isError(status.isSome() ? status.value : pot.none)
+);
+
+export const profileDeletionSuccessSelector = createSelector(
+  profileDeletionStatusSelector,
+  (status: Option<pot.Pot<boolean, Error>>): boolean =>
+    status.isSome() &&
+    !pot.isLoading(status.value) &&
+    pot.isSome(status.value) &&
+    status.value
+      ? true
+      : false
+);
+
 export default profileReducer;

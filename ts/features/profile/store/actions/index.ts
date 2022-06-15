@@ -1,4 +1,8 @@
-import { ActionType, createAsyncAction } from "typesafe-actions";
+import {
+  ActionType,
+  createAsyncAction,
+  createStandardAction
+} from "typesafe-actions";
 import { NetworkError } from "../../../../utils/errors";
 import { InitializedProfile } from "../../../../../definitions/backend/InitializedProfile";
 
@@ -11,4 +15,30 @@ export const getProfile = createAsyncAction(
   "PROFILE_FAILURE"
 )<void, InitializedProfile, NetworkError>();
 
-export type ProfileActions = ActionType<typeof getProfile>;
+export const profileDeletionStart = createStandardAction(
+  "PROFILE_DELETION_START"
+)<void>();
+
+export const profileDeletionCompleted = createStandardAction(
+  "PROFILE_DELETION_COMPLETED"
+)<void>();
+
+export const profileDeletionBack = createStandardAction(
+  "PROFILE_DELETION_BACK"
+)<void>();
+
+export const profileDeletionCancel = createStandardAction(
+  "PROFILE_DELETION_CANCEL"
+)<void>();
+
+export const profileDeletionFailure = createStandardAction(
+  "PROFILE_DELETION_FAILURE"
+)<void>();
+
+export type ProfileActions =
+  | ActionType<typeof getProfile>
+  | ActionType<typeof profileDeletionStart>
+  | ActionType<typeof profileDeletionCompleted>
+  | ActionType<typeof profileDeletionBack>
+  | ActionType<typeof profileDeletionCancel>
+  | ActionType<typeof profileDeletionFailure>;

@@ -4,4 +4,5 @@ export type NewProfileParamsList = {
   [NEWPROFILE_ROUTES.DELETION.MAIN]: undefined;
   [NEWPROFILE_ROUTES.DELETION.INFO]: undefined;
   [NEWPROFILE_ROUTES.DELETION.CONFIRM]: undefined;
+  [NEWPROFILE_ROUTES.DELETION.TYP]: undefined;
 };

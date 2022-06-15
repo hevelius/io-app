@@ -32,7 +32,8 @@ import WalletLayout from "../../components/wallet/WalletLayout";
 import {
   bonusVacanzeEnabled,
   bpdEnabled,
-  bpdOptInPaymentMethodsEnabled
+  bpdOptInPaymentMethodsEnabled,
+  newProfileScreenEnabled
 } from "../../config";
 import RequestBonus from "../../features/bonus/bonusVacanze/components/RequestBonus";
 import {
@@ -101,6 +102,7 @@ import { Transaction, Wallet } from "../../types/pagopa";
 import { isStrictSome } from "../../utils/pot";
 import { showToast } from "../../utils/showToast";
 import BpdOptInPaymentMethodsContainer from "../../features/bonus/bpd/components/optInPaymentMethods/BpdOptInPaymentMethodsContainer";
+import ProfileWalletButton from "../../features/profile/components/ProfileWalletButton";
 
 export type WalletHomeNavigationParams = Readonly<{
   newMethodAdded: boolean;
@@ -559,6 +561,7 @@ class WalletHomeScreen extends React.PureComponent<Props, State> {
         <BpdOptInPaymentMethodsContainer />
         <>
           {(bpdEnabled || this.props.isCgnEnabled) && <FeaturedCardCarousel />}
+          {newProfileScreenEnabled && <ProfileWalletButton />}
           {transactionContent}
         </>
         {bonusVacanzeEnabled && (

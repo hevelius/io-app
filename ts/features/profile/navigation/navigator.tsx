@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import ProfileDeletionConfirmScreen from "../screens/deletion/ProfileDeletionConfirmScreen";
 import ProfileDeletionInfoScreen from "../screens/deletion/ProfileDeletionInfoScreen";
+import ProfileDeletionTypScreen from "../screens/deletion/ProfileDeletionTypScreen";
 import { NewProfileParamsList } from "./params";
 import NEWPROFILE_ROUTES from "./routes";
 
@@ -20,6 +21,10 @@ export const NewProfileDeletionStackkNavigator = () => (
     <Stack.Screen
       name={NEWPROFILE_ROUTES.DELETION.CONFIRM}
       component={ProfileDeletionConfirmScreen}
+    />
+    <Stack.Screen
+      name={NEWPROFILE_ROUTES.DELETION.TYP}
+      component={ProfileDeletionTypScreen}
     />
   </Stack.Navigator>
 );

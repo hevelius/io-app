@@ -1,7 +1,5 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import { useNavigation } from "@react-navigation/native";
 import I18n from "../../../../i18n";
 import { InfoBox } from "../../../../components/box/InfoBox";
@@ -9,13 +7,12 @@ import { H4 } from "../../../../components/core/typography/H4";
 import { IOStyles } from "../../../../components/core/variables/IOStyles";
 import BaseScreenComponent from "../../../../components/screens/BaseScreenComponent";
 import FooterWithButtons from "../../../../components/ui/FooterWithButtons";
-import { GlobalState } from "../../../../store/reducers/types";
 import { emptyContextualHelp } from "../../../../utils/emptyContextualHelp";
 import { H2 } from "../../../../components/core/typography/H2";
 import NEWPROFILE_ROUTES from "../../navigation/routes";
-
-type Props = ReturnType<typeof mapDispatchToProps> &
-  ReturnType<typeof mapStateToProps>;
+import { useIODispatch } from "../../../../store/hooks";
+import { profileDeletionStart } from "../../store/actions";
+import { useOnFirstRender } from "../../../../utils/hooks/useOnFirstRender";
 
 const styles = StyleSheet.create({
   column: {
@@ -26,8 +23,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const ProfileDeletionInfoScreen = (_: Props): React.ReactElement => {
+const ProfileDeletionInfoScreen = (): React.ReactElement => {
   const navigation = useNavigation();
+  const dispatch = useIODispatch();
+
+  useOnFirstRender(() => {
+    dispatch(profileDeletionStart());
+  });
+
   const cancelButtonProps = {
     block: true,
     light: true,
@@ -39,10 +42,11 @@ const ProfileDeletionInfoScreen = (_: Props): React.ReactElement => {
   const continueButtonProps = {
     block: true,
     primary: true,
-    onPress: () =>
+    onPress: () => {
       navigation.navigate(NEWPROFILE_ROUTES.DELETION.CONFIRM, {
         screen: NEWPROFILE_ROUTES.DELETION.CONFIRM
-      }),
+      });
+    },
     title: I18n.t("global.buttons.continue")
   };
 
@@ -71,11 +75,4 @@ const ProfileDeletionInfoScreen = (_: Props): React.ReactElement => {
   );
 };
 
-const mapDispatchToProps = (_: Dispatch) => ({});
-
-const mapStateToProps = (_: GlobalState) => ({});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProfileDeletionInfoScreen);
+export default ProfileDeletionInfoScreen;

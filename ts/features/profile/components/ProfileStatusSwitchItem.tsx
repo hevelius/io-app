@@ -10,6 +10,7 @@ import NEWPROFILE_ROUTES from "../navigation/routes";
 type Props = {
   title: string;
   value: pot.Pot<boolean, Error>;
+  onRetry: () => void;
 };
 
 const styles = StyleSheet.create({
@@ -35,11 +36,12 @@ const ProfileStatusSwitchItem = (props: Props) => {
         <RemoteSwitch
           testID={"ProfileRemoteSwitchTestID"}
           value={props.value}
-          onValueChange={() =>
+          onRetry={props.onRetry}
+          onValueChange={() => {
             navigation.navigate(NEWPROFILE_ROUTES.DELETION.MAIN, {
               screen: NEWPROFILE_ROUTES.DELETION.INFO
-            })
-          }
+            });
+          }}
         />
       </View>
       <ItemSeparatorComponent noPadded={true} />

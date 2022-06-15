@@ -64,6 +64,7 @@ const ProfileMainScreen = (props: Props): React.ReactElement => {
             <ProfileStatusSwitchItem
               title={I18n.t("features.profile.main.deletion")}
               value={props.profileDeletionStatus.value}
+              onRetry={props.loadProfileDeletionStatus}
             />
           )}
         </ScreenContent>
