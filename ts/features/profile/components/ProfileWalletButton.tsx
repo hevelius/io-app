@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { View } from "native-base";
+import * as pot from "italia-ts-commons/lib/pot";
 import { useNavigation } from "@react-navigation/native";
 import ButtonDefaultOpacity from "../../../components/ButtonDefaultOpacity";
 import I18n from "../../../i18n";
@@ -8,6 +9,8 @@ import { H3 } from "../../../components/core/typography/H3";
 import { Body } from "../../../components/core/typography/Body";
 import customVariables from "../../../theme/variables";
 import NEWPROFILE_ROUTES from "../navigation/routes";
+import { useIOSelector } from "../../../store/hooks";
+import { profileDeletionStatusSelector } from "../store/reducers/profile";
 
 const styles = StyleSheet.create({
   contentPadding: {
@@ -18,6 +21,7 @@ const styles = StyleSheet.create({
 
 const ProfileWalletButton = (): React.ReactElement => {
   const navigation = useNavigation();
+  const profileDeletionStatus = useIOSelector(profileDeletionStatusSelector);
 
   return (
     <View style={styles.contentPadding}>
@@ -31,6 +35,11 @@ const ProfileWalletButton = (): React.ReactElement => {
         light={true}
         bordered={true}
         small={true}
+        disabled={
+          pot.isSome(profileDeletionStatus)
+            ? profileDeletionStatus.value
+            : false
+        }
         onPress={() =>
           navigation.navigate(NEWPROFILE_ROUTES.DELETION.MAIN, {
             screen: NEWPROFILE_ROUTES.DELETION.INFO

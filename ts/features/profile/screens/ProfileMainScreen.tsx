@@ -60,10 +60,10 @@ const ProfileMainScreen = (props: Props): React.ReactElement => {
         <ScreenContent title={I18n.t("features.profile.main.title")}>
           <ProfileUserList />
           {/* Show Deletion Status Switch */}
-          {props.profileDeletionStatus.isSome() && (
+          {pot.isSome(props.profileDeletionStatus) && (
             <ProfileStatusSwitchItem
               title={I18n.t("features.profile.main.deletion")}
-              value={props.profileDeletionStatus.value}
+              value={props.profileDeletionStatus}
               onRetry={props.loadProfileDeletionStatus}
             />
           )}

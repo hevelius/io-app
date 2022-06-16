@@ -10,9 +10,6 @@ import FooterWithButtons from "../../../../components/ui/FooterWithButtons";
 import { emptyContextualHelp } from "../../../../utils/emptyContextualHelp";
 import { H2 } from "../../../../components/core/typography/H2";
 import NEWPROFILE_ROUTES from "../../navigation/routes";
-import { useIODispatch } from "../../../../store/hooks";
-import { profileDeletionStart } from "../../store/actions";
-import { useOnFirstRender } from "../../../../utils/hooks/useOnFirstRender";
 
 const styles = StyleSheet.create({
   column: {
@@ -25,11 +22,6 @@ const styles = StyleSheet.create({
 
 const ProfileDeletionInfoScreen = (): React.ReactElement => {
   const navigation = useNavigation();
-  const dispatch = useIODispatch();
-
-  useOnFirstRender(() => {
-    dispatch(profileDeletionStart());
-  });
 
   const cancelButtonProps = {
     block: true,

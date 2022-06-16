@@ -3097,6 +3097,9 @@ features:
       startTitle: "Cancellazione profilo"
       confirmTitle: "Conferma cancellazione"
       message: "Proseguendo potrai richiedere la cancellazione del tuo profilo"
+      requestTitle: "Richiesta effettuata"
+      requestBody: "La richiesta di cancellazione del tuo profilo è stata effettuata con successo."
+      requestError: "La richiesta di cancellazione non è andata a buon fine."
     data:
       fullName: "Nome e Cognome"
       fiscalCode: "Codice Fiscale"

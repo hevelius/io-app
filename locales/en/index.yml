@@ -3070,6 +3070,9 @@ features:
       startTitle: "Profile deletion"
       confirmTitle: "Confirm deletion"
       message: "By continuing you can request the cancellation of your profile"
+      requestTitle: "Success!"
+      requestBody: "The request to delete your profile has been made successfully."
+      requestError: "The cancellation request was not successful."
     data:
       fullName: "Name and Surname"
       fiscalCode: "Fiscal Code"

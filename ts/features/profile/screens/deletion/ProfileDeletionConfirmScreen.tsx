@@ -1,37 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { SafeAreaView } from "react-native";
-import { UserDataProcessingChoiceEnum } from "../../../../../definitions/backend/UserDataProcessingChoice";
 import { IOStyles } from "../../../../components/core/variables/IOStyles";
 import BaseScreenComponent from "../../../../components/screens/BaseScreenComponent";
 import ScreenContent from "../../../../components/screens/ScreenContent";
 import FooterWithButtons from "../../../../components/ui/FooterWithButtons";
 import I18n from "../../../../i18n";
-import { upsertUserDataProcessing } from "../../../../store/actions/userDataProcessing";
-import { useIODispatch, useIOSelector } from "../../../../store/hooks";
 import { emptyContextualHelp } from "../../../../utils/emptyContextualHelp";
-import { showToast } from "../../../../utils/showToast";
 import ProfileUserList from "../../components/ProfileUserList";
 import NEWPROFILE_ROUTES from "../../navigation/routes";
-import {
-  profileDeletionCompleted,
-  profileDeletionFailure
-} from "../../store/actions";
-import {
-  profileDeletionErrorSelector,
-  profileDeletionSuccessSelector
-} from "../../store/reducers/profile";
 
 const ProfileDeletionConfirmScreen = (): React.ReactElement => {
   const navigation = useNavigation();
-  const dispatch = useIODispatch();
-  const deleteUserProfile = () =>
-    dispatch(
-      upsertUserDataProcessing.request(UserDataProcessingChoiceEnum.DELETE)
-    );
-  const didSendDeletionRequest = useIOSelector(profileDeletionSuccessSelector);
-  const deletionError = useIOSelector(profileDeletionErrorSelector);
-
   const cancelButtonProps = {
     block: true,
     light: true,
@@ -43,20 +23,9 @@ const ProfileDeletionConfirmScreen = (): React.ReactElement => {
   const continueButtonProps = {
     block: true,
     primary: true,
-    onPress: deleteUserProfile,
+    onPress: () => navigation.navigate(NEWPROFILE_ROUTES.DELETION.ROUTER),
     title: I18n.t("global.buttons.delete")
   };
-
-  React.useEffect(() => {
-    if (didSendDeletionRequest) {
-      dispatch(profileDeletionCompleted());
-      navigation.navigate(NEWPROFILE_ROUTES.DELETION.TYP);
-    }
-    if (deletionError) {
-      dispatch(profileDeletionFailure());
-      showToast("Error deleting profile");
-    }
-  }, [didSendDeletionRequest, navigation, dispatch, deletionError]);
 
   return (
     <BaseScreenComponent
