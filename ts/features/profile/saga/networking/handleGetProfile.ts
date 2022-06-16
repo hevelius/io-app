@@ -24,21 +24,18 @@ export function* handleGetProfile(
       if (getProfileResult.value.status === 200) {
         yield* put(loadProfile.success(getProfileResult.value.value));
         return;
-      } else {
-        yield* put(
-          loadProfile.failure({ ...getGenericError(new Error(`Error`)) })
-        );
       }
+
+      yield* put(loadProfile.failure(getGenericError(new Error(`Error`))));
+      return;
     }
 
-    if (getProfileResult.isLeft()) {
-      // left side of the Either
-      yield* put(
-        loadProfile.failure(
-          getGenericError(new Error(readableReport(getProfileResult.value)))
-        )
-      );
-    }
+    yield* put(
+      loadProfile.failure(
+        getGenericError(new Error(readableReport(getProfileResult.value)))
+      )
+    );
+    return;
   } catch (error) {
     yield* put(loadProfile.failure(getNetworkError(error)));
   }
