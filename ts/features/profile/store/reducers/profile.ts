@@ -29,7 +29,7 @@ const profileReducer = (
 };
 
 export const profileSelector = (state: GlobalState): ProfileState =>
-  state.profile;
+  state.features.profile;
 
 export const profileFullNameSelector = createSelector(
   profileSelector,
