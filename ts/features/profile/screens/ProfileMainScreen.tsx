@@ -1,11 +1,9 @@
 import * as React from "react";
 import { List } from "native-base";
 import { useNavigation } from "@react-navigation/native";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { SafeAreaView, ScrollView } from "react-native";
 import * as pot from "italia-ts-commons/lib/pot";
 import I18n from "../../../i18n";
-import { GlobalState } from "../../../store/reducers/types";
 import {
   profileFiscalCodeSelector,
   profileSelector,
@@ -17,7 +15,6 @@ import { LoadingErrorComponent } from "../../bonus/bonusVacanze/components/loadi
 import BaseScreenComponent, {
   ContextualHelpPropsMarkdown
 } from "../../../components/screens/BaseScreenComponent";
-import ScreenContent from "../../../components/screens/ScreenContent";
 import { getProfile } from "../store/actions";
 import { useOnFirstRender } from "../../../utils/hooks/useOnFirstRender";
 import ProfileUserItem from "../components/ProfileUserItem";
@@ -25,28 +22,95 @@ import NameSurnameIcon from "../../../../img/assistance/nameSurname.svg";
 import FiscalCodeIcon from "../../../../img/assistance/fiscalCode.svg";
 import EmailIcon from "../../../../img/assistance/email.svg";
 import InfoIcon from "../../../../img/assistance/info.svg";
+import { useIODispatch, useIOSelector } from "../../../store/hooks";
+import { IOStyles } from "../../../components/core/variables/IOStyles";
+import { H1 } from "../../../components/core/typography/H1";
 
 const contextualHelpMarkdown: ContextualHelpPropsMarkdown = {
   title: "profile.preferences.contextualHelpTitle",
   body: "profile.preferences.contextualHelpContent"
 };
 
-type Props = ReturnType<typeof mapDispatchToProps> &
-  ReturnType<typeof mapStateToProps>;
-
 /**
  * This is the screen that shows the user profile.
  * @param props
  * @returns
  */
-const ProfileMainScreen = (props: Props): React.ReactElement => {
+const ProfileMainScreen = (): React.ReactElement => {
   const navigation = useNavigation();
+  const dispatch = useIODispatch();
+
+  const notAvailable = I18n.t("global.remoteStates.notAvailable");
+  const profile = useIOSelector(profileSelector);
+  const fullName = useIOSelector(profileFullNameSelector).getOrElse(
+    notAvailable
+  );
+  const email = useIOSelector(profileEmailSelector)
+    .fold(notAvailable, _ => _)
+    .toString();
+
+  const fiscalCode = useIOSelector(profileFiscalCodeSelector).getOrElse(
+    notAvailable
+  );
+  const birthDate = useIOSelector(profileBirthDateSelector)
+    .fold(notAvailable, _ => _.toLocaleDateString())
+    .toString();
 
   useOnFirstRender(() => {
-    props.loadProfile();
+    dispatch(getProfile.request());
   });
 
   const iconSize = 24;
+
+  const itemsProps: ItemProps = {
+    fullName,
+    fiscalCode,
+    email,
+    birthDate
+  };
+
+  type Item = {
+    id?: string;
+    title: string;
+    subtitle: string;
+    icon: React.ReactElement;
+  };
+
+  type ItemProps = {
+    fullName: string;
+    fiscalCode: string;
+    email: string;
+    birthDate: string;
+  };
+
+  const getItems = (props: ItemProps): ReadonlyArray<Item> => [
+    {
+      id: "profileFullName",
+      icon: <NameSurnameIcon width={iconSize} height={iconSize} />,
+      title: I18n.t("features.profile.data.fullName"),
+      subtitle: props.fullName
+    },
+    {
+      id: "profileFiscalCode",
+      icon: <FiscalCodeIcon width={iconSize} height={iconSize} />,
+      title: I18n.t("features.profile.data.fiscalCode"),
+      subtitle: props.fiscalCode
+    },
+    {
+      id: "profileEmail",
+      icon: <EmailIcon width={iconSize} height={iconSize} />,
+      title: I18n.t("features.profile.data.email"),
+      subtitle: props.email
+    },
+    {
+      id: "profileBirthDate",
+      icon: <InfoIcon width={iconSize} height={iconSize} />,
+      title: I18n.t("features.profile.data.birthDate"),
+      subtitle: props.birthDate
+    }
+  ];
+
+  const items = getItems(itemsProps).filter(it => it.subtitle !== notAvailable);
 
   return (
     <BaseScreenComponent
@@ -54,66 +118,28 @@ const ProfileMainScreen = (props: Props): React.ReactElement => {
       faqCategories={["profile"]}
       goBack
     >
-      {pot.isLoading(props.profile) ? (
+      {pot.isLoading(profile) ? (
         <LoadingErrorComponent
-          isLoading={pot.isLoading(props.profile)}
+          isLoading={pot.isLoading(profile)}
           loadingCaption={I18n.t("features.profile.main.loading")}
-          onRetry={props.loadProfile}
+          onRetry={() => dispatch(getProfile.request())}
           errorText={I18n.t("global.genericError")}
           onAbort={navigation.goBack}
         />
       ) : (
-        <ScreenContent title={I18n.t("features.profile.main.title")}>
-          <List withContentLateralPadding>
-            {/* Show name and surname */}
-            {props.fullName.isSome() && (
-              <ProfileUserItem
-                title={I18n.t("features.profile.data.fullName")}
-                subtitle={props.fullName.value}
-                icon={<NameSurnameIcon width={iconSize} height={iconSize} />}
-              />
-            )}
-            {/* Show fiscalcode */}
-            {props.fiscalCode.isSome() && (
-              <ProfileUserItem
-                title={I18n.t("features.profile.data.fiscalCode")}
-                subtitle={props.fiscalCode.value}
-                icon={<FiscalCodeIcon width={iconSize} height={iconSize} />}
-              />
-            )}
-            {/* Show email */}
-            {props.email.isSome() && (
-              <ProfileUserItem
-                title={I18n.t("features.profile.data.email")}
-                subtitle={props.email.value}
-                icon={<EmailIcon width={iconSize} height={iconSize} />}
-              />
-            )}
-            {/* Show Birthdate */}
-            {props.birthDate.isSome() && (
-              <ProfileUserItem
-                title={I18n.t("features.profile.data.birthDate")}
-                subtitle={props.birthDate.value.toLocaleDateString()}
-                icon={<InfoIcon width={iconSize} height={iconSize} />}
-              />
-            )}
-          </List>
-        </ScreenContent>
+        <SafeAreaView style={IOStyles.flex}>
+          <ScrollView style={[IOStyles.horizontalContentPadding]}>
+            <H1>{I18n.t("features.profile.main.title")}</H1>
+            <List>
+              {items.map((item, idx) => (
+                <ProfileUserItem key={`profile_user_item_${idx}`} {...item} />
+              ))}
+            </List>
+          </ScrollView>
+        </SafeAreaView>
       )}
     </BaseScreenComponent>
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  loadProfile: () => dispatch(getProfile.request())
-});
-
-const mapStateToProps = (state: GlobalState) => ({
-  profile: profileSelector(state),
-  fullName: profileFullNameSelector(state),
-  email: profileEmailSelector(state),
-  fiscalCode: profileFiscalCodeSelector(state),
-  birthDate: profileBirthDateSelector(state)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileMainScreen);
+export default ProfileMainScreen;
