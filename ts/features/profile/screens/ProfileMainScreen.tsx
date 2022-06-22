@@ -47,14 +47,14 @@ const ProfileMainScreen = (): React.ReactElement => {
   );
   const email = useIOSelector(profileEmailSelector)
     .fold(notAvailable, _ => _)
-    .toString();
+    .valueOf();
 
   const fiscalCode = useIOSelector(profileFiscalCodeSelector).getOrElse(
     notAvailable
   );
   const birthDate = useIOSelector(profileBirthDateSelector)
     .fold(notAvailable, _ => _.toLocaleDateString())
-    .toString();
+    .valueOf();
 
   useOnFirstRender(() => {
     dispatch(getProfile.request());
