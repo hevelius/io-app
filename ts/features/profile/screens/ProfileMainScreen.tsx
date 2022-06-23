@@ -112,32 +112,34 @@ const ProfileMainScreen = (): React.ReactElement => {
 
   const items = getItems(itemsProps).filter(it => it.subtitle !== notAvailable);
 
+  if (profile.kind !== "PotSome") {
+    return (
+      <LoadingErrorComponent
+        isLoading={pot.isLoading(profile)}
+        loadingCaption={I18n.t("features.profile.main.loading")}
+        onRetry={() => dispatch(getProfile.request())}
+        errorText={I18n.t("global.genericError")}
+        onAbort={navigation.goBack}
+      />
+    );
+  }
+
   return (
     <BaseScreenComponent
       contextualHelpMarkdown={contextualHelpMarkdown}
       faqCategories={["profile"]}
       goBack
     >
-      {pot.isLoading(profile) ? (
-        <LoadingErrorComponent
-          isLoading={pot.isLoading(profile)}
-          loadingCaption={I18n.t("features.profile.main.loading")}
-          onRetry={() => dispatch(getProfile.request())}
-          errorText={I18n.t("global.genericError")}
-          onAbort={navigation.goBack}
-        />
-      ) : (
-        <SafeAreaView style={IOStyles.flex}>
-          <ScrollView style={[IOStyles.horizontalContentPadding]}>
-            <H1>{I18n.t("features.profile.main.title")}</H1>
-            <List>
-              {items.map((item, idx) => (
-                <ProfileUserItem key={`profile_user_item_${idx}`} {...item} />
-              ))}
-            </List>
-          </ScrollView>
-        </SafeAreaView>
-      )}
+      <SafeAreaView style={IOStyles.flex}>
+        <ScrollView style={[IOStyles.horizontalContentPadding]}>
+          <H1>{I18n.t("features.profile.main.title")}</H1>
+          <List>
+            {items.map((item, idx) => (
+              <ProfileUserItem key={`profile_user_item_${idx}`} {...item} />
+            ))}
+          </List>
+        </ScrollView>
+      </SafeAreaView>
     </BaseScreenComponent>
   );
 };
