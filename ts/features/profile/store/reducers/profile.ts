@@ -33,14 +33,10 @@ export const profileSelector = (state: GlobalState): ProfileState =>
 
 export const profileFullNameSelector = createSelector(
   profileSelector,
-  (profile: ProfileState): Option<string> =>
+  (profile: ProfileState): string | undefined =>
     pot.getOrElse(
-      pot.map(profile, p =>
-        fromNullable(p.name).chain(n =>
-          fromNullable(p.family_name).map(f => `${n} ${f}`)
-        )
-      ),
-      none
+      pot.map(profile, p => `${p.name} ${p.family_name}`),
+      undefined
     )
 );
 
