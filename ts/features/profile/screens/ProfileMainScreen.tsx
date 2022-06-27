@@ -26,6 +26,9 @@ import { useIODispatch, useIOSelector } from "../../../store/hooks";
 import { IOStyles } from "../../../components/core/variables/IOStyles";
 import { H1 } from "../../../components/core/typography/H1";
 import { emptyContextualHelp } from "../../../utils/emptyContextualHelp";
+import ProfileStatusSwitchItem from "../components/ProfileStatusSwitchItem";
+import { loadUserDataProcessing } from "../../../store/actions/userDataProcessing";
+import { UserDataProcessingChoiceEnum } from "../../../../definitions/backend/UserDataProcessingChoice";
 
 /**
  * This is the screen that shows the user profile.
@@ -41,16 +44,19 @@ const ProfileMainScreen = (): React.ReactElement => {
   const email = useIOSelector(profileEmailSelector)
     .fold(notAvailable, _ => _)
     .valueOf();
-
   const fiscalCode = useIOSelector(profileFiscalCodeSelector).getOrElse(
     notAvailable
   );
   const birthDate = useIOSelector(profileBirthDateSelector)
     .fold(notAvailable, _ => _.toLocaleDateString())
     .valueOf();
+  const deletionStatus = useIOSelector(profileDeletionStatusSelector);
 
   useOnFirstRender(() => {
     dispatch(getProfile.request());
+    dispatch(
+      loadUserDataProcessing.request(UserDataProcessingChoiceEnum.DELETE)
+    );
   });
 
   const iconSize = 24;
@@ -130,6 +136,13 @@ const ProfileMainScreen = (): React.ReactElement => {
             {items.map((item, idx) => (
               <ProfileUserItem key={`profile_user_item_${idx}`} {...item} />
             ))}
+            {/* Show Deletion Status Switch */}
+            {deletionStatus.isSome() && (
+              <ProfileStatusSwitchItem
+                title={I18n.t("features.profile.main.deletion")}
+                value={deletionStatus.value}
+              />
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
