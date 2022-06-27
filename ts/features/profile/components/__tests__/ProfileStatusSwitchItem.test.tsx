@@ -18,7 +18,6 @@ describe("Test ProfileStatusSwitchItem", () => {
     expect(component.getByTestId("ProfileSwitchItemTitleTestID")).toBeTruthy();
     expect(component.getAllByText("title")).toBeTruthy();
     expect(component.getByTestId("ProfileRemoteSwitchTestID")).toBeTruthy();
-    expect(component).toMatchSnapshot();
   });
   it("should match the snapshot with title and pot.someLoading", () => {
     const props = {
@@ -29,7 +28,6 @@ describe("Test ProfileStatusSwitchItem", () => {
     expect(component.getByTestId("ProfileSwitchItemTitleTestID")).toBeTruthy();
     expect(component.getAllByText("title")).toBeTruthy();
     expect(component.getByTestId("ProfileRemoteSwitchTestID")).toBeTruthy();
-    expect(component).toMatchSnapshot();
   });
 });
 
