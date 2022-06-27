@@ -10,7 +10,8 @@ import {
   profileSelector,
   profileEmailSelector,
   profileFullNameSelector,
-  profileBirthDateSelector
+  profileBirthDateSelector,
+  profileDeletionStatusSelector
 } from "../store/reducers/profile";
 import { LoadingErrorComponent } from "../../bonus/bonusVacanze/components/loadingErrorScreen/LoadingErrorComponent";
 import BaseScreenComponent from "../../../components/screens/BaseScreenComponent";
