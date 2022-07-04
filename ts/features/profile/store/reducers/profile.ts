@@ -75,30 +75,28 @@ const userDataStatusToBoolean = (
   status === UserDataProcessingStatusEnum.WIP;
 
 /**
- * This selector returns true if the user has a pending or a WIP status
+ * This selector returns true if the user has a PENDING or a WIP status
  * @param state
  * @returns
  */
 export const profileDeletionStatusSelector = (
   state: GlobalState
-): Option<pot.Pot<boolean, Error>> =>
+): pot.Pot<boolean, Error> =>
   pot.fold(
     state.userDataProcessing.DELETE,
-    () => some(pot.none) as Option<pot.Pot<boolean, Error>>,
-    () => some(pot.noneLoading),
-    value => some(pot.noneUpdating(userDataStatusToBoolean(value?.status))),
-    error => some(pot.noneError(error)),
-    value => some(pot.some(userDataStatusToBoolean(value?.status))),
-    value => some(pot.someLoading(userDataStatusToBoolean(value?.status))),
+    () => pot.none as pot.Pot<boolean, Error>,
+    () => pot.noneLoading,
+    value => pot.noneUpdating(userDataStatusToBoolean(value?.status)),
+    error => pot.noneError(error),
+    value => pot.some(userDataStatusToBoolean(value?.status)),
+    value => pot.someLoading(userDataStatusToBoolean(value?.status)),
     (oldValue, newValue) =>
-      some(
-        pot.someUpdating(
-          userDataStatusToBoolean(oldValue?.status),
-          userDataStatusToBoolean(newValue?.status)
-        )
+      pot.someUpdating(
+        userDataStatusToBoolean(oldValue?.status),
+        userDataStatusToBoolean(newValue?.status)
       ),
     (value, error) =>
-      some(pot.someError(userDataStatusToBoolean(value?.status), error))
+      pot.someError(userDataStatusToBoolean(value?.status), error)
   );
 
 export default profileReducer;

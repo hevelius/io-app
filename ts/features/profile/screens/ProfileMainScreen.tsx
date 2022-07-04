@@ -137,10 +137,10 @@ const ProfileMainScreen = (): React.ReactElement => {
               <ProfileUserItem key={`profile_user_item_${idx}`} {...item} />
             ))}
             {/* Show Deletion Status Switch */}
-            {deletionStatus.isSome() && (
+            {deletionStatus.kind === "PotSome" && (
               <ProfileStatusSwitchItem
                 title={I18n.t("features.profile.main.deletion")}
-                value={deletionStatus.value}
+                value={deletionStatus}
               />
             )}
           </View>
