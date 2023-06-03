@@ -1,4 +1,0 @@
-[submodule "io-app"]
-	path = io-app
-	url = https://github.com/pagopa/io-app
-	branch = bundle/it-wallet-test
