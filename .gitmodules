@@ -1,0 +1,4 @@
+[submodule "testrepo"]
+	path = testrepo
+	url = https://github.com/hevelius/testrepo
+	branch = bundle/test-repo-alpha
