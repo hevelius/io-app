@@ -1,0 +1,31 @@
+Arguments: 
+  /Users/hevelius/.nodenv/versions/16.19.0/bin/node /Users/hevelius/.nodenv/versions/16.19.0/bin/yarn init -y
+
+PATH: 
+  /Users/hevelius/.nodenv/versions/16.19.0/bin:/usr/local/Cellar/nodenv/1.4.1/libexec:/usr/local/sbin:/Users/hevelius/.rbenv/shims:/Users/hevelius/.nodenv/shims:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/Library/Apple/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Users/hevelius/Library/Android/sdk/tools:/Users/hevelius/Library/Android/sdk/platform-tools:/Users/hevelius/Library/Android/sdk/emulator:/Users/hevelius/Library/Android/sdk/tools/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.19.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/hevelius/pagopa/io-wallet/package.json: Unexpected token “ in JSON at position 5
+      at JSON.parse (<anonymous>)
+      at /Users/hevelius/.nodenv/versions/16.19.0/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/Users/hevelius/.nodenv/versions/16.19.0/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /Users/hevelius/.nodenv/versions/16.19.0/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
