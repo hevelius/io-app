@@ -1,26 +1,7 @@
 {
-  "name": "io-wallet",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./dist/index.js",
-  "scripts": {
-    "test": "jest",
-    "lint": "eslint \"**/*.{ts,tsx}\" --fix",
-    "compile": "tsc",
-    "clean": "rm -rf ./dist",
-    "prepare": "npm run compile",
-    "pretest": "npm run compile",
-    "posttest": "npm run lint"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hevelius/io-wallet.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/hevelius/io-wallet/issues"
-  },
-  "homepage": "https://github.com/hevelius/io-wallet#readme"
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "nohoist": ["**/react-native", "**/react-native/**"]
 }
