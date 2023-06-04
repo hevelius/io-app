@@ -1,0 +1,4 @@
+[submodule "io-app"]
+	path = io-app
+	url = https://github.com/hevelius/io-app
+	branch = bundle/io-wallet-test
