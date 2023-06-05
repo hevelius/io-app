@@ -1,30 +1,29 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
+    "target": "esnext",
     "module": "commonjs",
-    "esModuleInterop": true,
-    "isolatedModules": true,
+    "lib": ["es6", "dom", "es2019"],
     "jsx": "react",
-    "lib": ["es6", "dom", "es2018", "es2019"],
+    "noEmit": true,
     "moduleResolution": "node",
-    "types": ["react", "jest"],
+    "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "allowJs": false,
     "strict": true,
-    "target": "es6",
-    "outDir": "./dist",
     "noImplicitReturns": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "strictFunctionTypes": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "useUnknownInCatchVariables": true
   },
   "exclude": [
-    "coverage",
-    "node_modules",
-    "jest.config.js",
-    "dist",
-    "**/__tests__/*",
-    "**/__coverage__/*"
+    "android",
+    "ios",
+    "node_modules"
   ]
 }
