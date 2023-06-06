@@ -24,6 +24,7 @@ import {
 } from "../../../zendesk/store/actions";
 import { ToolEnum } from "../../../../../definitions/content/AssistanceToolConfig";
 import { SignatureRequestListView } from "../../../../../definitions/fci/SignatureRequestListView";
+import { TestComponent } from "../../../../packages/pkg/io-wallet/components/TestComponent";
 
 const FciSignatureRequestsScreen = () => {
   const dispatch = useIODispatch();
@@ -87,6 +88,7 @@ const FciSignatureRequestsScreen = () => {
         headerTitle={I18n.t("features.fci.requests.header")}
       >
         <SafeAreaView style={IOStyles.flex}>
+          <TestComponent />
           <ScreenContent title={I18n.t("features.fci.requests.title")}>
             <View style={[IOStyles.flex, IOStyles.horizontalContentPadding]}>
               {renderSignatureRequests()}
